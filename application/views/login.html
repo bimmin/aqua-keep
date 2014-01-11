@@ -1,0 +1,65 @@
+<!doctype html>
+
+<html>
+
+  <head>
+    <title>Login & Registration</title>
+    <meta charset="utf-8" />
+       <link rel="stylesheet" href="css/foundation.css">
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+  </head>
+
+  <body>
+  	<div class="wrapper">
+  <div class="row">
+   <!--  <div class="large-3 columns">
+      <h1>Aqua-Keep.com</h1>
+    </div> -->
+    <div class="large-12 columns">
+    	<div class="contain-to-grid">
+        <nav class="top-bar">
+          <ul class="title-area">
+              <li class="name">
+               <h1><a href="index.html">Aqua-Keep.com</a></h1>
+              </li>
+              <li class="toggle-topbar menu-icon"><a href="#"><span>Menu</span></a>
+              </li>
+          </ul>
+          <section class="top-bar-section">
+            <ul class="right">
+                <li class="divider"></li>
+                <li class="active"><a href="about.html">About</a></li>
+                <li class="divider"></li>
+                <li><a href="#">Get Started</a></li>
+                <li class="divider"></li>
+                <li><a href="login.html">Login</a></li>
+                <li class="divider"></li>
+            </ul>
+          </section>
+
+        </nav>
+      </div>
+<h2>Already have an account? Login here:</h2>
+  <form action="process.php" method="post">
+		<input type="hidden" name="action" value="login" />
+		<input type="text" name="email" placeholder="Email address" />
+		<input type="password" name="password" placeholder="Password" />
+		<input type="submit" value="Login" />
+	</form>
+
+<h2>Create a new account</h2>
+	<form action="process.php" method="post">
+		<input type="hidden" name="action" value="register" />
+		<input type="text" name="display_name" placeholder="Display Name" /><br />
+		<input type="text" name="email" placeholder="Email address" /><br />
+		<input type="password" name="password" placeholder="Password" /><br />
+		<input type="password" name="confirm_password" placeholder="Confirm Password" /><br />
+		<input type="submit" value="Register" />
+	</form>
+</div>
+</div>
+</div>
+
+  </body>
+
+</html>

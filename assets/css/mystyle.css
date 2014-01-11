@@ -1,0 +1,238 @@
+body{
+background-color: black;
+color: white;
+}
+
+h1, h2, h3, h4{
+	color: white;
+}
+
+label{
+ color: #79BEDB;
+}
+html input[type="button"] {
+height: 50px;
+width: 100px;
+}
+
+.aquarium-message{
+	margin-left: 25px;
+	color: #79BEDB;
+}
+
+.log-text{
+	margin-left: 25px;
+	margin-top: 15px;
+	color: #79BEDB;
+}
+
+.button{
+	background-color: #424514;
+}
+
+button:focus, .button:hover, .button:focus {
+background-color: #593E1A;
+}
+
+.reveal-modal {
+	/*background-color: #266A2E;*/
+	background-image: url('../img/v2.jpg');
+}
+
+.row{
+	padding: 10px;
+}
+
+.aquariums{
+	padding: 25px;
+}
+
+.aquarium_photos{
+	float: left;
+	border: 1px solid white;
+	padding: 5px;
+	margin: 5px;
+}
+
+.aquarium_photos img {
+	width: 300px;
+}
+.photo_div{
+	width: 400px;
+	text-align: center;
+}
+
+.days{
+	display: block;
+    font-size: 12px;
+    color: #2C2C2C;
+    padding: 5px 5px 0 0;
+}
+
+.today {
+    background: #E9EFF7;
+    height: 100%;
+} 
+
+.calendar{
+	width: 100%;
+	border-collapse: collapse;
+}
+
+.calendar td {
+    width: 14%; /* Force all cells to be about the same width regardless of content */
+    border:1px solid #CCC;
+    height: 100px;
+    vertical-align: top;
+    font-size: 10px;
+    padding: 0;
+}
+
+.day_header {
+    font-weight: normal;
+    text-align: center;
+    color: #757575;
+    font-size: 18px!important;
+    height: 100%!important;
+}
+
+.this_day:hover {
+    background: #F3F3F3;
+}
+
+.selected{
+	background-color: orange;
+
+}
+
+.selected:hover{
+	background: orange;
+}
+
+.set{
+	width: 15%;
+	float: left;
+}
+
+.wrapper{
+  width: 85%;
+  margin: 0 auto;
+  background:rgba(0,0,0,0.9);
+}
+.center{
+	text-align: center;
+}
+.opaque{
+opacity: 100%;
+}
+.horizontal_dotted_line{
+  border-bottom: 1px dotted white;
+  width: 90%;
+  margin: 0 auto;
+}
+.top_nudge{
+padding-top: 50px;
+}
+
+.lil_top_nudge{
+	padding-top: 10px;
+}
+.textarea{
+	height: 100px;
+}
+
+.log_date{
+	text-align: right;
+}
+
+.clear{
+	clear: both;
+}
+
+.energy_money{
+	font-size: large;
+	color: orange;
+}
+
+.min_height{
+	min-height: 600px;
+}
+
+.event_form{
+	width: 50%;
+	margin: 0 auto;
+	border: 1px solid gray;
+	display: none;
+	padding: 5px;
+}
+
+.browse_img{
+	height: 200px;
+}
+
+#kWh{
+	width: 85%;
+	float: left;
+}
+
+#comments{
+	margin-left: 25px;
+}
+
+#unit_display{
+	margin-top: 30px;
+}
+
+#devices_table{
+	width: 50%;
+}
+
+#push_down{
+	margin-top: 21px;
+}
+
+#energy_box{
+	float: left;
+	text-align: center;
+	width: 300px;
+	background-image: url('..//img/plug-electricity-icon.png');
+	background-repeat: no-repeat;
+	border: 1px solid gray;
+	padding: 10px;
+	margin-left: 20px;
+}
+
+#energy_box p{
+	line-height: 50%;
+	margin-left: 120px;
+}
+
+#footer { 
+	text-align: center;
+	margin-bottom: -20px;
+}
+#footer ul { 
+	list-style: none;
+}
+#footer ul li { 
+	display: inline;
+	padding: 0 5px 0 5px; 
+	
+}
+
+.bdrRt{
+	border-right: 1px solid gray;
+}
+
+@media only screen and (min-width: 768px) {
+
+body{
+background-image: url('../img/bg.jpg');
+background-repeat: no-repeat;
+background-color: black;
+}
+.wrapper{
+  width: 85%;
+  margin: 0 auto;
+}
+}
