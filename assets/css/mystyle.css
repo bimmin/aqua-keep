@@ -170,6 +170,14 @@ padding-top: 50px;
 	height: 200px;
 }
 
+.bdrRt{
+	border-right: 1px solid gray;
+}
+
+.bold {
+	font-weight: bold;
+}
+
 #kWh{
 	width: 85%;
 	float: left;
@@ -218,10 +226,6 @@ padding-top: 50px;
 	display: inline;
 	padding: 0 5px 0 5px; 
 	
-}
-
-.bdrRt{
-	border-right: 1px solid gray;
 }
 
 @media only screen and (min-width: 768px) {
