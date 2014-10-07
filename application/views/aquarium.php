@@ -124,7 +124,6 @@ $this->session->set_userdata('aquarium_id', $aquarium_details[0]['id']);
 				}
 
 				?></div>
-
 	</div>
 </div>
 
@@ -184,6 +183,4 @@ $this->session->set_userdata('aquarium_id', $aquarium_details[0]['id']);
   </script>
 
 </body>
-
 </html>
-
