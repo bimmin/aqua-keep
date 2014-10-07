@@ -113,11 +113,13 @@ $this->session->set_userdata('aquarium_id', $aquarium_details[0]['id']);
 			</form>
 		</div>
 		<div class="large-7 columns">
-		<h3>Comments</h3>
+		<h3 class="bold">Comments</h3>
 		<div id="comments">
 			<?php
 				foreach ($messages as $message){
-					echo "<h4>" . $message['display_name'] . " posted on " . $message['created_at']."<h4>";
+					$post_time = new DateTime($message['created_at']);
+					$post_time = date_format($post_time, 'l jS F Y \a\t g:ia');
+					echo "<h4>" . $message['display_name'] . " posted on " . $post_time . "<h4>";
 					echo "<p class='aquarium-message'>" . $message['message'] . "</p>";
 				}
 
