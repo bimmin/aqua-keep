@@ -1,130 +1,185 @@
-<!doctype html>
-<html>
+<!DOCTYPE html>
 
+<html class="no-js" lang="en">
 <head>
-<title>Contact- Aqua-Keep.com</title>
-<meta charset="utf-8" />
-<meta content="width=device-width, initial-scale=1.0" name="viewport">
-<link href="/assets/css/foundation.css" rel="stylesheet">
-<link href="/assets/css/mystyle.css" rel="stylesheet">
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
- <script type="text/javascript">
-    $(document).ready(function(){
-      $("#login").on("submit", function(){
-          var form = $(this);
-          $.post(form.attr("action"), form.serialize(), function(data){
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <link rel="shortcut icon" href="../img/icon-favicon.ico">
 
-            if (data['errors'] == true){
-                    $("#errors").html(data['messages']);
-                  }
-                  else{
-                     location.href="../user/profile";
-                  }
-            // $("#errors").html(html);
-          }, "json");
-      return false;
-      });
-
-      $("#register").on("submit", function(){
-          var form = $(this);
-          $.post(form.attr("action"), form.serialize(), function(html){
-
-            // console.log(html);
-            $("#errors").html(html);
-          }, "json");
-      return false;
-      });
-
-    });
-    </script>
+  <title>Coding Philosopher - About this website</title>
+  <link href="../css/app.css" rel="stylesheet">
+  <script src="../bower_components/modernizr/modernizr.js"></script>
+  <script src=
+  "https://google-code-prettify.googlecode.com/svn/loader/run_prettify.js"></script>
 </head>
 
 <body>
-
-<div class="wrapper">
   <div class="row">
-    <!--  <div class="large-3 columns">
-      <h1>Aqua-Keep.com</h1>
-    </div> -->
-    <div class="large-12 columns">
-      <div class="contain-to-grid">
-        <nav class="top-bar">
-          <ul class="title-area">
-            <li class="name">
-            <h1><a href="<?php echo base_url();?>">Aqua-Keep.com</a></h1>
-            </li>
-            <li class="toggle-topbar menu-icon"><a href="#"><span>Menu</span></a>
-            </li>
-          </ul>
-          <section class="top-bar-section">
-            <ul class="right">
-              <li class="active">
-              <a href="<?php echo base_url("/user/about");?>">About</a></li>
-              <li><a data-reveal-id="myModal" href="#">Get Started</a></li>
-              <li><a data-reveal-id="myModal" href="#">Login</a></li>
+    <nav class="top-bar" data-topbar="">
+      <ul class="title-area">
+        <li class="name">
+          <div class="logo">
+            <a href="../index.html">
+            <div class="left logo_bracket">
+              {
+            </div>
+
+            <div class="left line_height1">
+              <span id="coding">CODING</span><br>
+              <span id="philosopher">PHILOSOPHER</span>
+            </div>
+
+            <div class="left logo_bracket">
+              }
+            </div></a>
+          </div>
+        </li>
+
+        <li class="toggle-topbar menu-icon">
+          <a href="#"><span>Menu</span></a>
+        </li>
+      </ul>
+
+      <section class="top-bar-section">
+        <!-- Right Nav Section -->
+
+        <ul class="right">
+          <li class="divider"></li>
+
+          <li>
+            <a href="../index.html"><span class=
+            "invisible bracket lft_brkt">{</span>Home<span class=
+            "invisible bracket rgt_brkt">}</span></a>
+          </li>
+
+          <li class="divider"></li>
+
+          <li class="has-dropdown">
+            <a href="journal2014.html"><span class=
+            "invisible bracket lft_brkt">{</span>Journal<span class=
+            "invisible bracket rgt_brkt">}</span></a>
+
+            <ul class="dropdown">
+              <li>
+                <a href="journal2014.html"><span class=
+                "invisible bracket lft_brkt">{</span>2014<span class=
+                "invisible bracket rgt_brkt">}</span></a>
+              </li>
             </ul>
-          </section>
-        </nav>
-      </div>
-    </div>
-      <div class="row">
-        <div class="large-12 columns">
-          <h4>Contact</h4>
+          </li>
+
+          <li class="divider"></li>
+
+          <li>
+            <a href="about.html"><span class=
+            "invisible bracket lft_brkt">{</span>About<span class=
+            "invisible bracket rgt_brkt">}</span></a>
+          </li>
+
+          <li class="divider"></li>
+
+          <li>
+            <a href="contact.html"><span class=
+            "invisible bracket lft_brkt">{</span>Contact<span class=
+            "invisible bracket rgt_brkt">}</span></a>
+          </li>
+
+          <li class="divider"></li>
+        </ul>
+      </section>
+    </nav>
+  </div>
+
+  <div class="row">
+    <div class="large-9 push-3 columns">
+      <div class="top_tear"></div>
+
+      <div class="content columns">
+        <h3>Contact Me</h3>
+
+        <p>If you would like to contact the coding philosopher fill out the
+        form below.</p>
+
+        <form action="form_contact.php" id="contactform" method="post" name="contactform">
           <div class="row">
             <div class="large-12 columns">
-              <div class="right"><img src="<?php echo base_url("/assets/img/David-Ethier.jpg");?>"><p class="center">Showing off Aqua-Keep at CodingDojo Demo Day</p></div><p>I created aqua-keep.com as a way to learn programing. I am continuing to make changes to this site and add new features. If you have any questions please send me an email:</p>
-              <p><a href="mailto:info@aqua-keep.com">info@aqua-keep.com</a></p>
-              <p>David Ethier</p>
+              <label for="first_name">Name <input maxlength="50" name=
+              "first_name" type="text"></label> <label for="email">Email
+              Address <input maxlength="80" name="email" type="text"></label>
+              <label for="comments">Questions/Comments 
+              <textarea cols="25" maxlength="1000" name="comments" rows="6">
+              </textarea></label>
+              <a class="button" onclick="$(this).parents('form').submit();">Send</a>
             </div>
           </div>
-        </div>
+        </form>
       </div>
-      <footer class="row">
+
+      <div class="columns bottom_tear"></div>
+    </div>
+
+    <div class="medium-3 large-3 pull-9 columns">
+      <ul class="side-nav">
+          <li>
+            <a href="../page/periodic-table.html"><span class=
+            "invisible bracket lft_brkt">{</span>Tableless Periodic
+            Table<span class="invisible bracket rgt_brkt">}</span></a>
+          </li>
+
+          <li>
+            <a href="../page/favicon.html"><span class=
+            "invisible bracket lft_brkt">{</span>Webpage favicon
+            <span class="invisible bracket rgt_brkt">}</span></a>
+          </li>
+
+          <li>
+            <a href="../page/learn-frontend.html"><span class=
+            "invisible bracket lft_brkt">{</span>How to Learn Frontend
+            Development<span class="invisible bracket rgt_brkt">}</span></a>
+          </li>
+
+          <li>
+            <a href="../page/about.html"><span class=
+            "invisible bracket lft_brkt">{</span>About this Site<span class=
+            "invisible bracket rgt_brkt">}</span></a>
+          </li>
+      </ul>
+
+
+      <p><img src="../img/CPicons.png"></p>
+    </div>
+  </div>
+
+  <footer class="row">
     <div class="large-12 columns">
-      <hr />
+      <hr>
+
       <div class="row">
         <div class="large-6 columns">
-          <p>&copy; 2014 Aqua-Keep.com</p>
+          <p>&copy; Copyright no one at all. Go to town.</p>
         </div>
+
         <div class="large-6 columns">
           <ul class="inline-list right">
-            <li><a href="#" data-reveal-id="myModal">Login</a></li>
-            <li><a href="<?php echo base_url("/user/about");?>">About</a></li>
-            <li><a href="<?php echo base_url("/user/privacy");?>">Privacy</a></li>
-            <li><a href="<?php echo base_url("/user/contact");?>">Contact</a></li>
+            <li>
+              <a href="../index.html">Home</a>
+            </li>
+
+            <li>
+              <a href="../page/journal2014.html">Journal</a>
+            </li>
+
+            <li>
+              <a href="../page/about.html">About</a>
+            </li>
+
+            <li>
+              <a href="../page/contact.html">Contact</a>
+            </li>
           </ul>
         </div>
       </div>
     </div>
-  </footer>
-    </div>
-<div id="myModal" class="reveal-modal small" data-reveal="" data-reveal-ajax="true">
-  <div id="errors">
-  </div>
-  <h3>Already have an account? Login here:</h3>
-  <form id="login" action="<?php echo base_url("/user/process_login");?>" method="post">
-    <!--  <input type="hidden" name="action" value="login" /> -->
-    <input type="text" name="email" placeholder="Email address" />
-    <input type="password" name="password" placeholder="Password" />
-    <input type="submit" value="Login" />
-  </form>
-  <h3>Create a new account</h3>
-  <form id="register" action="/user/process_registration" method="post">
-    <input name="action" type="hidden" value="register" />
-    <input name="display_name" placeholder="Display Name" type="text" /><br />
-    <input name="email" placeholder="Email address" type="text" /><br />
-    <input name="password" placeholder="Password" type="password" /><br />
-    <input name="confirm_password" placeholder="Confirm Password" type="password" /><br />
-    <input type="submit" value="Register" />
-  </form>
-  <a class="close-reveal-modal">×</a> </div>
-<script src="/assets/js/foundation/foundation.js"></script>
-<script src="/assets/js/foundation/foundation.topbar.js"></script>
-<script src="/assets/js/foundation/foundation.reveal.js"></script>
-<script>
-    $(document).foundation();
-  </script>
-
+  </footer><script src="../bower_components/jquery/dist/jquery.min.js"></script> <script src="../bower_components/foundation/js/foundation.min.js"></script> <script src="../js/app.js"></script>
 </body>
-
 </html>
