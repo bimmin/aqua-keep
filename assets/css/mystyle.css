@@ -227,6 +227,9 @@ padding-top: 50px;
 	padding: 0 5px 0 5px; 
 	
 }
+#contact_textarea{
+	height: 125px;
+}
 
 @media only screen and (min-width: 768px) {
 
