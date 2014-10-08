@@ -60,8 +60,9 @@ class User extends Main
 		   }
 		   else
 		   {
-		     echo "Invalid Login Credentials";
-		     return false;
+		   	$data['errors'] = TRUE;
+		   	$data['messages'] = "<span class='error'>Invalid your username or password.</span>";
+		   	echo json_encode($data);
 		   }
 
 		}
@@ -447,7 +448,7 @@ public function update_aquarium(){
 		$this->load->view('about');
 	}
 	public function privacy(){
-		$this->load->view('under_construction');
+		$this->load->view('privacy');
 	}
 	public function contact(){
 
