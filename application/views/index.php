@@ -1,230 +1,462 @@
-<?php
+<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-if($this->session->userdata('user_session')['login_status']===TRUE)
+require_once('main.php');
+
+class User extends Main
 {
-  header("Location: /user/profile");;
+	
+	public function login()
+	{
+		// $data['login_errors'] = $this->session->flashdata('login_errors');
+		// $this->load->view('index', $data);
+		$this->load->view('index');
+
+	}
+
+	public function process_login(){
+		// var_dump($this->input->post());
+		//  echo $this->input->post('email');
+
+		$this->load->library('form_validation');
+
+		$this->form_validation->set_rules('email', 'Email', 'valid_email|required');
+
+		$this->form_validation->set_rules('password', 'Password', 'min_length[6]|required');
+
+		if($this->form_validation->run() === FALSE)
+		{
+			// $this->session->set_flashdata('login_errors', validation_errors());
+			// redirect(base_url('user/login/'));
+			$data['errors'] = TRUE;
+			$data['messages'] = validation_errors();
+			echo json_encode($data);
+		}
+		else
+		{
+		   $email = $this->input->post('email');
+		   $password = $this->input->post('password');
+
+		   $this->load->model('User_model');
+
+		   $query = $this->User_model->get_user($email, $password);
+
+		   if($query)
+		   {
+
+				$user = array('id'=> $query->id,
+							  'display_name' => $query->display_name,
+							  'password' => $query->password,
+							  'created_at' => $query->created_at,
+							  'email' => $email,
+							  'login_status' => TRUE
+							 );
+
+				$this->session->set_userdata('user_session', $user);
+
+		    	// $html ='<script>location.href="user/profile";</script>';
+		    	$data['errors'] = FALSE;
+				echo json_encode($data);
+				// redirect(base_url('/user/profile'));
+		   }
+		   else
+		   {
+		   	$data['errors'] = TRUE;
+		   	$data['messages'] = "<span class='error'>Invalid email address or password.</span>";
+		   	echo json_encode($data);
+		   }
+
+		}
+
+	}
+
+	public function process_registration(){
+	$this->load->library('form_validation');
+
+		$this->form_validation->set_rules('display_name', 'Display Name', 'alpha|required');
+
+		$this->form_validation->set_rules('email', 'Email', 'valid_email|required');
+
+		$this->form_validation->set_rules('password', 'Password', 'min_length[6]|required');
+
+		$this->form_validation->set_rules('confirm_password', 'Password', 'matches[password]|required');
+
+		if($this->form_validation->run() === FALSE)
+		{
+			// $this->session->set_flashdata('login_errors', validation_errors());
+			// redirect(base_url('user/login/'));
+			$html = validation_errors();
+			echo json_encode($html);
+		}
+
+		else
+		{
+			//check if email is already taken and if not add record and direct to profile
+			$this->load->helper('date');
+
+			$display_name = $this->input->post('display_name');
+			$email = $this->input->post('email');
+			$password = $this->input->post('password');
+
+			$this -> db -> select('*');
+			$this -> db -> FROM('users');
+			$this -> db -> WHERE('email', $email);
+
+			$users = $this -> db -> get()->row();
+
+			if(count($users)>0){
+				$html = "Email already registered.";
+				echo json_encode($html);
+			}
+			else{
+				//instert Query
+
+				$now = date('Y-m-d H:i:s');
+
+				$insert_data = array(
+					'display_name'=> $display_name,
+					'email'=> $email,
+					'password'=> md5($password),
+					'created_at'=> $now
+					);
+				$this->db->insert('users', $insert_data);
+
+				$html = "<p>You have successfully registered, Please login.</p>";
+				echo json_encode($html);
+
+			}
+		}
+	}
+
+	public function profile($id=null){
+		//this function gets uesr aquariums and sends data with load view
+		$this->load->model('User_model');
+		$user_id = $this->session->userdata('user_session')['id'];
+
+		if($id==null)
+		{
+			$query_aquariums = $this->User_model->get_aquariums($user_id);
+			$data['logged_in_user'] = $user_id;
+		}
+		else
+		{
+			$query_aquariums = $this->User_model->get_aquariums($id);
+			$data['logged_in_user'] = $id;
+		}
+		for ($i=0; $i<count($query_aquariums); $i++){
+			if($query_aquariums[$i]['url'] == NULL)
+			{
+				$query_aquariums[$i]['url'] = "goldi.jpg";
+			}
+		}
+		$data['aquariums'] = $query_aquariums;
+		
+		$this->load->view('profile', $data);
+	}
+
+	public function aquarium($aquarium_id){
+
+		$this->load->model('User_model');
+
+		$query_aquariums = $this->User_model->get_aquarium($aquarium_id);
+
+		for ($i=0; $i<count($query_aquariums); $i++){
+			if($query_aquariums[$i]['url'] == NULL)
+			{
+				$query_aquariums[$i]['url'] = "goldi.jpg";
+			}
+		}
+		$data['aquarium_details'] = $query_aquariums;
+
+		$query_messages = $this->User_model->get_messages($aquarium_id);
+
+		$data['messages'] = $query_messages;
+
+		$this->load->view('aquarium', $data);
+	}
+
+	public function public_aquarium($aquarium_id){
+
+		$this->load->model('User_model');
+
+		$query_aquariums = $this->User_model->get_aquarium($aquarium_id);
+
+		for ($i=0; $i<count($query_aquariums); $i++){
+			if($query_aquariums[$i]['url'] == NULL)
+			{
+				$query_aquariums[$i]['url'] = "goldi.jpg";
+			}
+		}
+		$data['aquarium_details'] = $query_aquariums;
+
+		$query_messages = $this->User_model->get_messages($aquarium_id);
+
+		$data['messages'] = $query_messages;
+
+		$this->load->view('public_aquarium', $data);
+	}
+
+	public function browse(){
+		$this->load->model('User_model');
+		$query_aquariums = $this->User_model->get_rand_aquariums();
+
+		for ($i=0; $i<count($query_aquariums); $i++){
+			if($query_aquariums[$i]['url'] == NULL)
+			{
+				$query_aquariums[$i]['url'] = "goldi.jpg";
+			}
+		}
+		$data['aquariums'] = $query_aquariums;
+
+		$this->load->view('browse', $data);
+	}
+
+	public function add_aquarium(){
+
+		$this->load->library('form_validation');
+
+		$this->form_validation->set_rules('name', 'Aquarium Name', 'trim|required|xss_clean');
+
+		$this->form_validation->set_rules('size', 'Aquarium Size', 'numeric|required');
+
+		$this->form_validation->set_rules('inhabitants', 'Inhabitants', 'trim|required|xss_clean');
+
+		if($this->form_validation->run() === FALSE)
+		{
+			$html['errors'] = TRUE;
+			$html['messages'] = validation_errors();
+			echo json_encode($html);
+		}
+
+		else
+		{
+			$html['errors'] = FALSE;
+
+			$this->load->model('User_model');
+
+			$data = $this->input->post();
+
+			$this->User_model->add_aquarium($data);
+
+			$html['profile_id'] = $data['user_id'];
+
+			echo json_encode($html);
+
+		}
+	}
+
+public function update_aquarium(){
+
+		$this->load->library('form_validation');
+
+		$this->form_validation->set_rules('name', 'Aquarium Name', 'trim|required|xss_clean');
+
+		$this->form_validation->set_rules('size', 'Aquarium Size', 'numeric|required');
+
+		$this->form_validation->set_rules('inhabitants', 'Inhabitants', 'trim|required|xss_clean');
+
+		if($this->form_validation->run() === FALSE)
+		{
+			$data['messages'] = validation_errors();
+			$data['errors'] = TRUE;
+			echo json_encode($data);
+		}
+
+		else
+		{
+			$data['errors'] = FALSE;
+
+			$this->load->model('User_model');
+
+			$data = $this->input->post();
+
+			$this->User_model->update_aquarium($data);
+
+			echo json_encode($data);
+
+		}
+	}
+
+	public function delete_aquarium($aquarium_id){
+			$this->load->model('User_model');
+
+			$this->User_model->delete_aquarium($aquarium_id);
+
+			redirect('user/profile');
+	}
+
+	public function post_message($aquarium_id){
+		$this->load->model('User_model');
+
+		$data['user_id'] = $this->session->userdata('user_session')['id'];
+		$data['aquarium_id'] = $aquarium_id;
+		$data['message'] = $this->input->post('message');
+		$data['created_at'] = date('Y-m-d H:i:s');
+
+		$this->User_model->add_message($data);
+
+		redirect('user/aquarium/'.$aquarium_id.'');
+	}
+
+	public function graphs($aquarium_id){
+
+		$this->load->model('User_model');
+
+		$water_readings = $this->User_model->get_water_params($aquarium_id);
+
+
+		$types_array = array();
+		//create an array of arrays. Keys are types from db which holds array of date and water reading/value
+		foreach ($water_readings as $key => $value) {
+			if(isset($types_array[$value['type']])){
+				array_push($types_array[$value['type']], array($value['date'], $value['value']));
+			}
+			else{
+				$types_array[$value['type']] = array();
+				array_push($types_array[$value['type']], array($value['date'], $value['value']));
+			}
+		}
+
+		$types = array();
+		// date_default_timezone_set('UTC');
+
+		foreach($types_array as $key => $type){
+			$hold = $key;
+			$hold = array();
+			$hold['name'] = $key;
+
+			foreach($type as &$value){
+				$value[0] = date("d-m-Y", strtotime($value[0]));
+				$value[0] = strtotime($value[0]) * 1000 - strtotime('02-01-1970: 00:00:00') * 1000;
+				$value[1] = (float)$value[1];
+			}
+
+			$hold['data'] = $type;
+
+			array_push($types, $hold);
+		}
+
+		$types_array['types_array'] = $types;
+		$types_array['aquarium_id'] = $aquarium_id;
+
+
+
+		$this->load->view('graphs', $types_array);
+	}
+
+	public function add_data($aquarium_id){
+		$data = $this->input->post();
+		$data['aquarium_id'] = $aquarium_id;
+		
+		$this->load->model('User_model');
+		$this->User_model->add_water_test($data);
+
+		redirect('user/graphs/'.$aquarium_id.'');
+	}
+
+	public function energy($aquarium_id){
+
+		$data['aquarium_id'] = $aquarium_id;
+
+		$this->load->model('User_model');
+
+		$data['devices'] = $this->User_model->get_devices($aquarium_id);
+
+		$data['kWh'] = $this->User_model->get_kWh($aquarium_id);
+
+		$this->load->view('energy', $data);
+	}
+
+	public function change_kWh($aquarium_id){
+		$this->load->model('User_model');
+
+		$data['kWh_cost'] = $this->input->post('kWh_cost');
+		$data['id'] = $aquarium_id;
+
+		$this->User_model->set_Kwh($data);
+		echo json_encode("kwh updated");
+	}
+
+	public function add_device(){
+
+		$this->load->library('form_validation');
+
+		$this->form_validation->set_rules('name', 'Device Name', 'trim|required|xss_clean');
+
+		$this->form_validation->set_rules('watts', 'Device Watts', 'trim|numeric|required');
+
+		$this->form_validation->set_rules('hours_on_per_day', 'Hours of use a day', 'numeric|max_length[24]|required');
+
+		if($this->form_validation->run() === FALSE)
+		{
+			$html['errors'] = TRUE;
+			$html['messages'] = validation_errors();
+			echo json_encode($html);
+		}
+
+		else
+		{
+			$html['errors'] = FALSE;
+
+			$this->load->model('User_model');
+
+			$data = $this->input->post();
+
+			$html['aquarium_id'] = $data['aquarium_id'];
+
+			$this->User_model->add_device($data);
+
+			// $html['profile_id'] = $data['user_id'];
+
+			echo json_encode($html);
+
+
+		}
+
+	}
+
+	public function delete_device($device_id, $aquarium_id){
+		$this->load->model('User_model');
+		$this->User_model->delete_device($device_id);
+
+		redirect(base_url('/user/energy/'.$aquarium_id.''));
+
+	}
+
+	public function log($aquarium_id){
+		$this->load->model('User_model');
+		$data['log'] = $this->User_model->get_logs($aquarium_id);
+		$data['aquarium_id'] = $aquarium_id;
+		$this->load->view('log', $data);
+	}
+
+	public function add_log_event($aquarium_id){
+		$this->load->model('User_model');
+		$data['text'] = $this->input->post('text');
+		$data['aquarium_id'] = $aquarium_id;
+		$data['date'] = date('Y-m-d H:i:s');
+		$this->User_model->add_log_event($data);
+
+		$this->log($aquarium_id);
+	}
+
+	public function edit_account(){
+		$this->load->view('under_construction');
+	}
+
+	public function about(){
+		$this->load->view('about');
+	}
+	public function privacy(){
+		$this->load->view('privacy');
+	}
+	public function contact(){
+
+	$this->load->view('contact');
 }
-?>
 
-<!doctype html>
-
-<html>
-
-  <head>
-    <title>Aqua-Keep.com - Aquarium Maintenance Web Based Program</title>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/assets/css/foundation.css">
-    <link rel="stylesheet" href="/assets/css/mystyle.css">
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-
-    <script type="text/javascript">
-    $(document).ready(function(){
-      $("#login").on("submit", function(){
-          var form = $(this);
-          $.post(form.attr("action"), form.serialize(), function(data){
-
-            if (data['errors'] == true){
-                    $("#errors").html(data['messages']);
-                  }
-                  else{
-                     location.href="../user/profile";
-                  }
-          }, "json");
-      return false;
-      });
-
-      $("#register").on("submit", function(){
-          var form = $(this);
-          $.post(form.attr("action"), form.serialize(), function(html){
-
-            // console.log(html);
-            $("#errors").html(html);
-          }, "json");
-      return false;
-      });
-
-    });
-    </script>
-
-
-  </head>
-
-  
-  <body>
-  <div class="wrapper">
-  <div class="row">
-    
-   <!--  <div class="large-3 columns">
-      <h1>Aqua-Keep.com</h1>
-    </div> -->
-    <div class="large-12 columns">
-
-
-      <div class="contain-to-grid">
-        <nav class="top-bar" data-topbar>
-          <ul class="title-area">
-              <li class="name">
-               <h1><a href="<?php echo base_url();?>">Aqua-Keep.com</a></h1>
-              </li>
-              <li class="toggle-topbar menu-icon">
-                <a href=""><span>Menu</span></a>
-              </li>
-          </ul>
-          <section class="top-bar-section">
-            <ul class="right">
-                <li class="divider"></li>
-                <li class="active"><a href="<?php echo base_url("/user/about");?>">About</a></li>
-                <li class="divider"></li>
-                <li><a href="#" data-reveal-id="myModal">Get Started</a></li>
-                <li class="divider"></li>
-                <li><a href="#" data-reveal-id="myModal">Login</a></li>
-                <li class="divider"></li>
-            </ul>
-          </section>
-
-        </nav>
-      </div>
-
-  <!-- End Header and Nav -->
-
-  <div class="row">
-    <div class="large-12 columns">
-
-      <div class="slideshow-wrapper">
-        <span class="preloader" style="display: none;"></span>
-        <div class="orbit-container opaque">
-          <ul data-orbit>
-            <li><img src="/assets/img/home-tank.jpg" /></li>
-            <li><img src="/assets/img/coral.jpg" /></li>
-            <li><img src="/assets/img/discus.jpg" /></li>
-          </ul>
-      </div>
-    </div>
-
-      <hr>
-    </div>
-  </div>
-  <!-- Second Band (Image Left with Text) -->
-
-  <div class="row">
-    <div class="large-4 columns">
-      <img class="top_nudge" src="/assets/img/devices.png">
-    </div>
-    <div class="large-8 columns">
-      <h4>Welcome to Aqua-Keep.com</h4>
-      <div class="row">
-        <div class="large-12 columns">
-          <p>Aqua-keep.com is a website designed to help you with aquarium maintenance. Create a profile for your aquarium and set up tasks for the types of maintenance you do on your aquarium. The system will remind you when a certain task needs to be done. Forget the last time you changed the filter media? Aqua-keep will serve as log so you know exactly what needs to be done and when.</p>
-       
-          <p>Aqua-keep was started as a project by the creator to learn web development. If there is a feature you would like to see in a future version of Aqua-Keep.com please 
-      <a href="mailto:info@aqua-keep.com">email me</a>.</p>
-        </div>
-      </div>
-    </div>
-  </div>
-
-
-  <!-- Third Band (Image Right with Text) -->
-
-  <div class="row">
-    <div class="large-8 columns">
-      <h4>Additional Features</h4>
-
-      <p>Aqua-Keep allows you to add you aquarium equipment such as filter, lights and heaters. The system wil calculate how much money you spend over time on electricty. If you are concidering a new lighitng system you can put the new light in Aqua-Keep to find out the difference it will cost you in your electric bill.</p>
-
-      <p>When you test your aquarium water you can store the information in Aqua-Keep.com The system will graph this information for you overtime. This can be helpful when something changes in your tank such as an algea outbreak. You can review your water parameters and see what has changed.</p>
-
-    </div>
-    <div class="large-4 columns">
-      <img src="/assets/img/chart.jpg">
-    </div>
-  </div>
-
-
-  <!-- Footer -->
-
-  <footer class="row">
-    <div class="large-12 columns">
-      <hr />
-      <div class="row">
-        <div class="large-6 columns">
-          <p>&copy; 2014 Aqua-Keep.com</p>
-        </div>
-        <div class="large-6 columns">
-          <ul class="inline-list right">
-            <li><a href="#" data-reveal-id="myModal">Login</a></li>
-            <li><a href="<?php echo base_url("/user/about");?>">About</a></li>
-            <li><a href="<?php echo base_url("/user/privacy");?>">Privacy</a></li>
-            <li><a href="<?php echo base_url("/user/contact");?>">Contact</a></li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </footer>
-</div>
-
-<div data-reveal-ajax="true" id="myModal" class="reveal-modal small" data-reveal>
- 
-  <div id="errors"></div>
-
-  <h3>Already have an account? Login here:</h3>
-  <form id="login" action="/user/process_login" method="post">
-   <!--  <input type="hidden" name="action" value="login" /> -->
-    <input type="text" name="email" placeholder="Email address" />
-    <input type="password" name="password" placeholder="Password" />
-    <input type="submit" value="Login" />
-  </form>
-
-<h3>Create a new account</h3>
-  <form id="register" action="/user/process_registration" method="post">
-    <input type="hidden" name="action" value="register" />
-    <input type="text" name="display_name" placeholder="Display Name" /><br />
-    <input type="text" name="email" placeholder="Email address" /><br />
-    <input type="password" name="password" placeholder="Password" /><br />
-    <input type="password" name="confirm_password" placeholder="Confirm Password" /><br />
-    <input type="submit" value="Register" />
-  </form>
-  <a class="close-reveal-modal">×</a>
-</div>
-
-  <script src="/assets/js/foundation/foundation.js"></script>
-  <script src="/assets/js/foundation/foundation.orbit.js"></script>
-  <script src="/assets/js/foundation/foundation.topbar.js"></script>
-  <script src="/assets/js/foundation/foundation.reveal.js"></script>
-  <!-- Other JS plugins can be included here -->
-
-  <script>
-$(document).foundation({
-  orbit: {
-    animation: 'fade',
-    timer_speed: 4000,
-    pause_on_hover: true,
-    resume_on_mouseout: true,
-    animation_speed: 500,
-    stack_on_small: false,
-    navigation_arrows: false,
-    slide_number: false,
-    container_class: 'orbit-container',
-    stack_on_small_class: 'orbit-stack-on-small',
-    next_class: 'orbit-next',
-    prev_class: 'orbit-prev',
-    timer_container_class: 'orbit-timer',
-    timer_paused_class: 'paused',
-    timer_progress_class: 'orbit-progress',
-    slides_container_class: 'orbit-slides-container',
-    active_slide_class: 'active',
-    orbit_transition_class: 'orbit-transitioning',
-    bullets: false,
-    timer: true,
-    next_on_click: false,
-    variable_height: false,
-  }
-});
-</script>
- <script>
-    $(document).foundation();
-  </script>
-  </body>
-
-</html>
+	public function logout()
+	{
+		$this->session->sess_destroy();
+		redirect(base_url(''));
+	}
+}
