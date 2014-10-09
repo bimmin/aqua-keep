@@ -178,6 +178,14 @@ padding-top: 50px;
 	font-weight: bold;
 }
 
+.smaller {
+	font-size: .7em;
+}
+
+.larger {
+	font-size: 1.3em;
+}
+
 #kWh{
 	width: 85%;
 	float: left;
