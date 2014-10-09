@@ -48,11 +48,11 @@
         <div class="large-6 columns">
           <div id="aquarium_details">
             <h2>Aquarium Details</h2>
-            <p>Size: <?php echo $aquarium_details[0]['size']. " " . $aquarium_details[0]['units'] ?>
+            <p><span class="larger">Size:</span> <?php echo $aquarium_details[0]['size']. " " . $aquarium_details[0]['units'] ?>
             </p>
-            <p>Inhabitants: <?php echo $aquarium_details[0]['inhabitants'] ?>
+            <p><span class="larger">Inhabitants:</span> <?php echo $aquarium_details[0]['inhabitants'] ?>
             </p>
-            <p>Notes: <?php echo $aquarium_details[0]['notes'] ?></p>
+            <p><span class="larger">Notes:</span> <?php echo $aquarium_details[0]['notes'] ?></p>
           </div>
         </div>
       </div>
@@ -73,7 +73,7 @@
               foreach ($messages as $message){
               	$post_time = new DateTime($message['created_at']);
               	$post_time = date_format($post_time, 'l jS F Y \a\t g:ia');
-              	echo "<h4>" . $message['display_name'] . " posted on " . $post_time . "<h4>";
+              	echo "<h4>" . $message['display_name'] . "<span class='smaller'> posted on " . $post_time . "</span><h4>";
               	echo "<p class='aquarium-message'>" . $message['message'] . "</p>";
               }
               
