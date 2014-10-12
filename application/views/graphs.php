@@ -30,12 +30,9 @@
            }
           
            });
-      
-         series = JSON.parse('<?php echo json_encode($types_array) ?>');
-      
-           $.each(series, function(key, value) {
           
-              });
+         series = JSON.parse('<?php echo json_encode($types_array) ?>');
+
       
               $('#container').highcharts({
                   chart: {
@@ -45,7 +42,7 @@
                       text: 'Water Parameters'
                   },
                   subtitle: {
-                      text: 'For Aquarium Name'
+                      text: 'For '+JSON.parse('<?php echo json_encode($aquarium_name) ?>')
                   },
                   xAxis: {
                       type: 'datetime',
