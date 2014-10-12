@@ -347,9 +347,14 @@ public function update_aquarium(){
 	public function add_data($aquarium_id){
 		$data = $this->input->post();
 		$data['aquarium_id'] = $aquarium_id;
-		
+
+		$log_data['text'] =  $this->input->post('type') . " tested at " . $this->input->post('value');
+		$log_data['date'] = $this->input->post('date');
+		$log_data['aquarium_id'] = $aquarium_id;
+
 		$this->load->model('User_model');
 		$this->User_model->add_water_test($data);
+		$this->User_model->add_log_from_test($log_data);
 
 		redirect('user/graphs/'.$aquarium_id.'');
 	}
