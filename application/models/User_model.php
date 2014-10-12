@@ -135,6 +135,10 @@ class User_model extends CI_Model
 		$this->db->insert('water_tests', $data);
 	}
 
+	public function add_log_from_test($data){
+		$this->db->insert('log', $data);
+	}
+
 	public function add_message($data){
 		$this->db->insert('messages', $data);
 	}
