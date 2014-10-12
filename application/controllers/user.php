@@ -61,7 +61,7 @@ class User extends Main
 		   else
 		   {
 		   	$data['errors'] = TRUE;
-		   	$data['messages'] = "<span class='error'>Invalid your username or password.</span>";
+		   	$data['messages'] = "<span class='error'>Invalid email address or password.</span>";
 		   	echo json_encode($data);
 		   }
 
@@ -324,11 +324,11 @@ public function update_aquarium(){
 			$hold = array();
 			$hold['name'] = $key;
 
-
 			foreach($type as &$value){
 				$value[0] = date("d-m-Y", strtotime($value[0]));
 				$value[0] = strtotime($value[0]) * 1000 - strtotime('02-01-1970: 00:00:00') * 1000;
 				$value[1] = (float)$value[1];
+				//$value[2] = $aquarium_name;
 			}
 
 			$hold['data'] = $type;
@@ -337,9 +337,9 @@ public function update_aquarium(){
 		}
 
 		$types_array['types_array'] = $types;
+
 		$types_array['aquarium_id'] = $aquarium_id;
-
-
+		$types_array['aquarium_name'] = $this->User_model->get_aquarium_name($aquarium_id);
 
 		$this->load->view('graphs', $types_array);
 	}
@@ -452,34 +452,8 @@ public function update_aquarium(){
 	}
 	public function contact(){
 
-		// $email_content = serialize($this->input->post());
-
-  // $this->load->library('email');
- //    $this->load->library('parser');
-
- //    $this->email->clear();
- //    $config['mailtype'] = "html";
- //    $this->email->initialize($config);
- //    $this->email->set_newline("\r\n");
- //    $this->email->from('email@example.com', 'Website');
- //    $list = array('xxxxxxxx@archmage.lk', 'xxxxx@gmail.com');
- //    $this->email->to($list);
- //    $data = array();
-
- //    $this->email->subject('This is an email test');
- //    $this->email->message($email_content);
-
-
-
- //    if ($this->email->send()) {
- //        echo 'Your email was sent, thanks chamil.';
- //    } else {
- //        show_error($this->email->print_debugger());
- //    }
-	// }
-
-	$this->load->view('contact');
-}
+	    $this->load->view('contact');
+    }
 
 	public function logout()
 	{
