@@ -107,9 +107,9 @@ class User_model extends CI_Model
 
 		$this->db->select('aquariums.*, photos.url')
 				 ->from('aquariums')
-				 ->join('photos', 'photos.aquarium_id = aquariums.id', 'left')
-				 ->order_by('id', 'random')
-				 ->group_by('id')
+				 ->join('photos', 'photos.aquarium_id = aquariums.id')
+				 ->order_by('photos.aquarium_id', 'random')
+	 			 ->group_by('id')
 				 ->limit(10);
 		return $this->db->get()->result_array();
 	}
@@ -121,6 +121,14 @@ class User_model extends CI_Model
 		$this->db->where('aquarium_id', $aquarium_id);
 
 		return $this->db->get()->result_array();
+	}
+
+	public function get_aquarium_name($aquarium_id){
+		$this->db->select('aquariums.name');
+		$this->db->from('aquariums');
+		$this->db->where('id', $aquarium_id);
+		$result = $this->db->get()->result();
+		return $result[0]->name;
 	}
 
 	public function add_water_test($data){
