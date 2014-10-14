@@ -32,7 +32,7 @@
            });
           
          series = JSON.parse('<?php echo json_encode($types_array) ?>');
-
+      
       
               $('#container').highcharts({
                   chart: {
@@ -84,13 +84,22 @@
       <section class="top-bar-section">
         <ul class="right">
           <li class="divider"></li>
-          <li><a href="<?php echo base_url("user/profile");?>">Profile</a></li>
-          <!--            <li>
-            <a href="<?php echo base_url("user/energy/".$aquarium_details[0]['id']."");?>">
-            Energy Page</a></li> -->
+          <li><a href="<?php echo base_url("/calendar");?>">Calendar</a></li>
+          <li class="divider"></li>
+          <li class="has-dropdown">
+            <a href="#">Show</a>
+            <ul class="dropdown">
+              <li><a href="<?php echo base_url("user/profile");?>">Profile</a></li>
+              <li><a href="<?php echo base_url("user/graphs/".$aquarium_id."");?>">Graphs</a></li>
+              <li>
+                <a href="../energy/<?php echo $aquarium_id ?>">
+                Energy Page</a>
+              </li>
+              <li><a href="<?php echo base_url("user/log/". $aquarium_id."");?>">Log</a></li>
+            </ul>
+          </li>
           <li class="divider"></li>
         </ul>
-        </li>
       </section>
     </nav>
   </div>
