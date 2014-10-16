@@ -365,6 +365,8 @@ public function update_aquarium(){
 
 		$this->load->model('User_model');
 
+		$data['aquarium_name'] = $this->User_model->get_aquarium_name($aquarium_id);
+
 		$data['devices'] = $this->User_model->get_devices($aquarium_id);
 
 		$data['kWh'] = $this->User_model->get_kWh($aquarium_id);
