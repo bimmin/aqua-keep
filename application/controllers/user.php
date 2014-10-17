@@ -434,6 +434,7 @@ public function update_aquarium(){
 		$this->load->model('User_model');
 		$data['log'] = $this->User_model->get_logs($aquarium_id);
 		$data['aquarium_id'] = $aquarium_id;
+		$data['aquarium_name'] = $this->User_model->get_aquarium_name($aquarium_id);
 		$this->load->view('log', $data);
 	}
 
