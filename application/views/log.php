@@ -43,7 +43,7 @@
       </div>
       <div class="row">
         <div class="large-12 columns">
-          <h1>Aquarium Log</h1>
+          <h1><?php echo $aquarium_name; ?> Log</h1>
           <h4>Add a New Entry</h4>
           <form action="../add_log_event/<?php echo $aquarium_id ?>" method="POST">
             <textarea class="textarea" name="text"></textarea>
